@@ -13,15 +13,16 @@
 
     <h1>Institutionaler Zufriff auf die ZDB</h1>
     <form method="GET" class="form-inline" action="http://dispatch.opac.d-nb.de/SRCH">
-      <b>Institution: </b><input autocomplete="on" class="ui-autocomplete-input" id="search-organisation" style="width:500px;line-height:1.5em" type="text">
+        <b>Institution:</b> <input autocomplete="on" class="ui-autocomplete-input" id="search-organisation" style="width:500px;line-height:1.5em" type="text">
         <input name="TRM" id="id" type="hidden">
         <input name="IKT" id="ikt" value="8574" type="hidden">
-        <button type="submit" class="btn">Suche in ZDB-OPAC</button>
-        <button type="reset" class="btn" onclick="$('#selected-organisation').html('')">Löschen</button>
+        <button type="reset" class="btn" onclick="$('#selected-organisation').html('');$('#submit-organisation').hide();">Löschen</button>
         <div id="selected-organisation"></div>
+        <button type="submit" id="submit-organisation" class="btn">Filter für diese Institution</button>
     </form>
     
     <script type="text/javascript" class="init">
+        $("#submit-organisation").hide();
         $('#search-organisation').autocomplete({
           select: function (event, ui) {
             event.preventDefault();
@@ -30,7 +31,7 @@
             var isil = /\/(DE-.+|AT-.+)$/.exec(ui.item.value);
             $("#id").val(isil[1]);
             $("#selected-organisation").html("<h2>ZDB-Ressourcen von " + ui.item.label + " &lt;" + isil[1] + "&gt;</h2>");
-
+            $("#submit-organisation").show();
           },
           focus: function (event, ui) {
             event.preventDefault();
